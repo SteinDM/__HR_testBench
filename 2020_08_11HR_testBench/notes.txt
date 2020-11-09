@@ -1,0 +1,1 @@
+Make sure not to have a space in the windows 10 user folder. This will result in build errors when compiling because "" missing in makefile
