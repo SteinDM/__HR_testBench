@@ -24,12 +24,15 @@
 
 #include "HX711.h"
 
-#define calibration_factor -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
+#define calibration_factor -440.0 //This value is obtained using the SparkFun_HX711_Calibration sketch  - around -440 for 5 kg element
 
 #define DOUT  3
 #define CLK  2
 
 HX711 scale;
+float f_value=0;
+int i_value=0;		// 10 kg = +-10 000 grams
+
 
 void setup() {
   Serial.begin(9600);
@@ -43,10 +46,44 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Reading: ");
-  Serial.print(scale.get_units(), 1); //scale.get_units() returns a float
-  Serial.print(" lbs"); //You can change this to kg but you'll need to refactor the calibration_factor
+
+	/*
+	 * prep all the variables
+	 */
+  f_value=(scale.get_units());
+  if(f_value>0){
+	  i_value=(int)(f_value+0.5);
+  }
+  else{
+	  i_value=(int)(f_value-0.5);
+  }
+	// if only positive values are desired.
+	//  if(i_value<0){
+	//	  i_value=0
+	//  }
+
+
+
+
+ /*
+  * sends the value as a int16 - MSB first, then LSB
+  */
+  Serial.print(f_value, 1); //scale.get_units() returns a float
+  Serial.print(" grams"); //You can change this to kg but you'll need to refactor the calibration_factor
+
+
+
+
+/* unhash for debugging - sends it as ASCI Code, first int, then float.
+ * //  Serial.println();
+ *
+  Serial.print(i_value);
   Serial.println();
+
+  Serial.write((byte)(i_value>>8));
+  Serial.write((byte)i_value);
+  Serial.println();
+  */
 }
 
 
