@@ -68,8 +68,9 @@ void loop() {
  /*
   * sends the value as a int16 - MSB first, then LSB
   */
-  Serial.print(f_value, 1); //scale.get_units() returns a float
-  Serial.print(" grams"); //You can change this to kg but you'll need to refactor the calibration_factor
+  Serial.write((byte)(i_value>>8));
+  Serial.write((byte)i_value);
+  // does this need a crc and start Byte?
 
 
 
@@ -79,9 +80,8 @@ void loop() {
  *
   Serial.print(i_value);
   Serial.println();
-
-  Serial.write((byte)(i_value>>8));
-  Serial.write((byte)i_value);
+  Serial.print(f_value, 1); //scale.get_units() returns a float
+  Serial.print(" grams");
   Serial.println();
   */
 }
