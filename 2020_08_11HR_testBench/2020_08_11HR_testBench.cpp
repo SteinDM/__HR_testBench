@@ -32,6 +32,8 @@
 HX711 scale;
 float f_value=0;
 int i_value=0;		// 10 kg = +-10 000 grams
+byte start_byte=240;
+byte stop_byte=24;
 
 
 void setup() {
@@ -68,16 +70,18 @@ void loop() {
  /*
   * sends the value as a int16 - MSB first, then LSB
   */
+  Serial.write(start_byte);
   Serial.write((byte)(i_value>>8));
   Serial.write((byte)i_value);
+  Serial.write(stop_byte);
   // does this need a crc and start Byte?
 
+  delay(95);
 
 
-
-/* unhash for debugging - sends it as ASCI Code, first int, then float.
- * //  Serial.println();
- *
+// unhash for debugging - sends it as ASCI Code, first int, then float.
+  Serial.println();
+/*
   Serial.print(i_value);
   Serial.println();
   Serial.print(f_value, 1); //scale.get_units() returns a float
