@@ -33,12 +33,12 @@ HX711 scale;
 float f_value=0;
 int i_value=0;		// 10 kg = +-10 000 grams
 byte start_byte=240;
-byte stop_byte=24;
+byte stop_byte=44;
 
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("HX711 scale demo");
+//  Serial.println("HX711 scale demo");
 
   scale.begin(DOUT, CLK);
   scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
@@ -80,7 +80,7 @@ void loop() {
 
 
 // unhash for debugging - sends it as ASCI Code, first int, then float.
-  Serial.println();
+//  Serial.println();
 /*
   Serial.print(i_value);
   Serial.println();
