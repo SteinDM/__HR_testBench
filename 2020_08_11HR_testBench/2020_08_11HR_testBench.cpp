@@ -24,7 +24,7 @@
 
 #include "HX711.h"
 
-#define calibration_factor -440.0 //This value is obtained using the SparkFun_HX711_Calibration sketch  - around -440 for 5 kg element
+#define calibration_factor 237.05 //10 kg element - This value is obtained using the SparkFun_HX711_Calibration sketch  - around 440 for 5 kg element, 241.74 for 10kg element (measured with 2685gr weight -> 2633.1N; verrified with 5076 -> 4978Ncm weight and 38gr -> 37Ncm weight)
 
 #define DOUT  3
 #define CLK  2
