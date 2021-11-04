@@ -23,25 +23,31 @@
 */
 
 #include "HX711.h"
-/* This value is obtained using the SparkFun_HX711_Calibration sketch hashed out at the bottom
+/* The value for calibration_factor is obtained using the SparkFun_HX711_Calibration sketch hashed out at the bottom
+ *
+ *
  * ----------------
  * 10 kg element HR testbench
  * ----------------
  * calibration_factor 241.74
- * reference weight (reference force) -> measurement with cal. fact (*100 = readout).
+ * [reference weight( x9.81 = reference force ) -> measurement with cal. fact (*100 = readout)]
+ * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - -
  * 2685gr (26.34N) -> 26.331 N measured;
  * 5076gr (49.766N)-> 49.78N measured ;
  * 38gr (3.728N)-> 3.7N measured;
- * 2149.4gr(21.0856N) -> 21.07N measured (20.85N second time)
+ * 2149.4gr(21.0856N) -> 21.07N measured
  * 5165.6gr(50.67453N) -> 50.67N measured
  *
- * * ----------------
+ *
+ *
+ * ----------------
  * 10 kg element TSDZ test bench
  * ----------------
- * calibration_factor 241.74
- * reference weight( x9.81 = reference force ) -> measurement with cal. fact (*100 = readout).
- * 2149.4gr(21.0856N) -> 21.07N measured (20.85N second time)
- * 5165.6gr(50.67453N) -> 50.67N measured
+ * calibration_factor 245.94
+ * [reference weight( x9.81 = reference force ) -> measurement with cal. fact (*100 = readout)]
+ * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - -
+ * 2149.4gr(21.0856N) -> 21.098N measured
+ * 5165.6gr(50.67453N) -> 50.665N measured
  *
  * --------------------
  * 5 kg element
@@ -173,7 +179,7 @@ void loop() {
 
 HX711 scale;
 
-float calibration_factor = -7050; //-7050 worked for my 440lb max scale setup
+float calibration_factor = 241.74; // start point for 10kg element
 
 void setup() {
   Serial.begin(9600);
@@ -198,7 +204,7 @@ void loop() {
 
   Serial.print("Reading: ");
   Serial.print(scale.get_units(), 1);
-  Serial.print(" lbs"); //Change this to kg and re-adjust the calibration factor if you follow SI units like a sane person
+  Serial.print(" N x 100"); //Change this to kg and re-adjust the calibration factor if you follow SI units like a sane person
   Serial.print(" calibration_factor: ");
   Serial.print(calibration_factor);
   Serial.println();
@@ -207,9 +213,9 @@ void loop() {
   {
     char temp = Serial.read();
     if(temp == '+' || temp == 'a')
-      calibration_factor += 10;
+      calibration_factor += .1;
     else if(temp == '-' || temp == 'z')
-      calibration_factor -= 10;
+      calibration_factor -= .1;
   }
 }
 /*
