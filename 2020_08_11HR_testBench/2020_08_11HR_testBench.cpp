@@ -23,9 +23,32 @@
 */
 
 #include "HX711.h"
-
-#define calibration_factor 237.05 //10 kg element - This value is obtained using the SparkFun_HX711_Calibration sketch  - around 440 for 5 kg element, 241.74 for 10kg element (measured with 2685gr weight -> 2633.1N; verrified with 5076 -> 4978Ncm weight and 38gr -> 37Ncm weight)
-
+/* This value is obtained using the SparkFun_HX711_Calibration sketch hashed out at the bottom
+ * ----------------
+ * 10 kg element HR testbench
+ * ----------------
+ * calibration_factor 241.74
+ * reference weight (reference force) -> measurement with cal. fact (*100 = readout).
+ * 2685gr (26.34N) -> 26.331 N measured;
+ * 5076gr (49.766N)-> 49.78N measured ;
+ * 38gr (3.728N)-> 3.7N measured;
+ * 2149.4gr(21.0856N) -> 21.07N measured (20.85N second time)
+ * 5165.6gr(50.67453N) -> 50.67N measured
+ *
+ * * ----------------
+ * 10 kg element TSDZ test bench
+ * ----------------
+ * calibration_factor 241.74
+ * reference weight( x9.81 = reference force ) -> measurement with cal. fact (*100 = readout).
+ * 2149.4gr(21.0856N) -> 21.07N measured (20.85N second time)
+ * 5165.6gr(50.67453N) -> 50.67N measured
+ *
+ * --------------------
+ * 5 kg element
+ * --------------------
+ * calibration_factor +- 440
+ */
+#define calibration_factor 241.74
 #define DOUT  3
 #define CLK  2
 
@@ -44,7 +67,7 @@ void setup() {
   scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
   scale.tare(); //Assuming there is no weight on the scale at start up, reset the scale to 0
 
-  Serial.println("Readings:");
+  //Serial.println("Readings:");
 }
 
 void loop() {
@@ -68,7 +91,8 @@ void loop() {
 
 
  /*
-  * sends the value as a int16 - MSB first, then LSB
+  * sends [force x 100] as a int16 - MSB first, then LSB
+  * max/min is +-320N~+-32kg
   */
   Serial.write(start_byte);
   Serial.write((byte)(i_value>>8));
