@@ -52,9 +52,11 @@
  * --------------------
  * 5 kg element
  * --------------------
- * calibration_factor +- 440
+ * calibration_factor 447.74
+ * 2149.4gr(21.0856N) -> 21.085N measured
+ * 5165.6gr(50.67453N) -> 50.664N measured
  */
-#define calibration_factor 241.74
+#define calibration_factor 241.74			// fill in the appropriate callibration factor here
 #define DOUT  3
 #define CLK  2
 
