@@ -56,9 +56,20 @@
  * 2149.4gr(21.0856N) -> 21.085N measured
  * 5165.6gr(50.67453N) -> 50.664N measured
  */
-#define calibration_factor 241.74			// fill in the appropriate callibration factor here
+
+//TSDZ2 parameters
+#define calibration_factor 245.94			// 10 kg element tsdz2 bench
+#define TORQUE_ARM_LENGTH 730.425	// 730.425mm - see documentation/torquebench folder
+
+//HR parameters
+//#define calibration_factor 241.74			// 10 kg element Hongrunda bench
+//#define TORQUE_ARM_LENGTH 1000	// 1000mm for rear traction motor
+
+
+
 #define DOUT  3
 #define CLK  2
+
 
 HX711 scale;
 float f_value=0;
@@ -83,7 +94,7 @@ void loop() {
 	/*
 	 * prep all the variables
 	 */
-  f_value=(scale.get_units());
+  f_value=((scale.get_units())*TORQUE_ARM_LENGTH)/1000;
   if(f_value>0){
 	  i_value=(int)(f_value+0.5);
   }
