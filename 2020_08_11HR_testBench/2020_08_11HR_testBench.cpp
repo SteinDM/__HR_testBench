@@ -113,10 +113,10 @@ void loop() {
   * sends [force x 100] as a int16 - MSB first, then LSB
   * max/min is +-320N~+-32kg
   */
-  Serial.write(start_byte);
+  Serial.write((byte)start_byte);
   Serial.write((byte)(i_value>>8));
   Serial.write((byte)i_value);
-  Serial.write(stop_byte);
+  Serial.write((byte)stop_byte);
   // does this need a crc and start Byte?
 
   delay(95);
